@@ -1,0 +1,55 @@
+name: "Test Logs"
+on:
+  workflow_dispatch:
+
+jobs:
+  log_stuff:
+    runs-on: ["ubuntu-latest"]
+    steps:
+      - name: Print standard logs
+        run: |
+          echo "Hello world"
+          printf "This is\na multi-line log.\n"
+      - name: Print colored logs
+        run: |
+          # tput does not work in GitHub Actions.
+          #blue="$(tput setaf 4)"
+          #normal="$(tput sgr0)"
+          printf 'This word is \e[1;34mblue\e[m.\n'
+      - name: GHA log
+        run: |
+          printf '::error::This is an error log with a word in \e[1;34mblue\e[m.\n'
+          printf '::warning::This is a warning log with a word in \e[1;34mblue\e[m.\n'
+          printf '::notice::This is a notice log with a word in \e[1;34mblue\e[m.\n'
+          printf '::debug::This is a debug log with a word in \e[1;34mblue\e[m.\n'
+          
+          printf '::group::Let’s start a group with a word in \e[1;34mblue\e[m.\n'
+          printf '::warning::A warning log in the group with a word in \e[1;34mblue\e[m.\n'
+          printf '::notice::A notice log in the group with a word in \e[1;34mblue\e[m.\n'
+          printf '::endgroup::\n'
+          
+          # Sadly this does not work: groups cannot be embedded and starting a new group terminates the current one.
+          printf '::group::Let’s start a group with an embedded group, with a word in \e[1;34mblue\e[m.\n'
+          printf '::warning::A warning log in the group with a word in \e[1;34mblue\e[m.\n'
+          printf '::notice::A notice log in the group with a word in \e[1;34mblue\e[m.\n'
+          printf '::group::Let’s start an embedded group with a word in \e[1;34mblue\e[m.\n'
+          printf '::warning::A warning log in the embedded group with a word in \e[1;34mblue\e[m.\n'
+          printf '::notice::A notice log in the embedded group with a word in \e[1;34mblue\e[m.\n'
+          printf '::endgroup::\n'
+          printf '::endgroup::\n'
+      - name: Masks
+        run: |
+          printf '::add-mask::log\n'
+          printf '::add-mask::blue\n'
+          printf '::warning::This is a warning log with a word in \e[1;34mblue\e[m.\n'
+          printf '::warning::This is a warning log on stderr with a word in \e[1;34mblue\e[m.\n' >/dev/stderr
+      - name: Random args in commands
+        run: |
+          printf '::error title=This is an error with a word in \e[1;34mblue\e[m.,line=42::An error log with a word in \e[1;34mblue\e[m\n'
+          printf '::warning title=WarningTest,line=42::A warning log with a word in \e[1;34mblue\e[m\n'
+          printf '::notice title=This is a notice with some random parameters.,bob=kelso::A notice log with a word in \e[1;34mblue\e[m\n'
+          printf '::warning title=WarningTestRandomParameters,bob=kelso::A warning log again with a word in \e[1;34mblue\e[m\n'
+          printf '::error title=WhyTitles,line=42::An error log again with a word in \e[1;34mblue\e[m\n'
+          echo "::warning file=.github/workflows/test-logs.yaml,line=1,col=5,endColumn=7::Missing semicolon"
+          echo "::warning file=TestsData/file with space.txt,line=1,col=5,endColumn=7::No probs; just being annoying."
+          echo "::error file=TestsData/file%2Cwith%2Ca%2Ccomma.txt,line=1,col=5,endColumn=7::Yet even more annoying."

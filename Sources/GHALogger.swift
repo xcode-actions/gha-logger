@@ -11,7 +11,7 @@ import Logging
  This is a wrapper for a CLTLogger with some specific prefixes. */
 public struct GHALogger : LogHandler {
 	
-	public static let metadataKeyForLogTitle = "title"
+	public static let metadataKeyForLogTitle = "log-title"
 	
 	public init(metadataProvider: Logger.MetadataProvider? = LoggingSystem.metadataProvider) {
 		var constantsByLevel = CLTLogger.defaultConstantsByLogLevelForColors

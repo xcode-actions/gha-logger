@@ -24,7 +24,7 @@ public struct GHALogger : LogHandler {
 		constantsByLevel[.info]!    .logPrefix = "\(SGR(.bold).rawValue)Info:\(SGR.reset.rawValue) "
 		constantsByLevel[.debug]!   .logPrefix = "" /* This will be set dynamically. */
 		constantsByLevel[.trace]!   .logPrefix = "\(SGR(.fgColorTo256PaletteValue(247)).rawValue)[trace]\(SGR.reset.rawValue)" /* This will be modified dynamically, but we always want the [trace]. */
-		self.cltLogger = .init(fd: .standardOutput, multilineMode: .disallowMultiline, constantsByLevel: constantsByLevel, metadataProvider: metadataProvider)
+		self.cltLogger = .init(fd: .standardError, multilineMode: .disallowMultiline, constantsByLevel: constantsByLevel, metadataProvider: metadataProvider)
 	}
 	
 	public var logLevel: Logger.Level {

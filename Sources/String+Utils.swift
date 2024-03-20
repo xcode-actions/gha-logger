@@ -5,9 +5,14 @@ import Foundation
 internal extension String {
 	
 	/* From <https://github.com/orgs/community/discussions/26736#discussioncomment-3253165>. */
-	func escapedForGitHubCommandMessage() -> String {
-		return self
+	func escapedForGitHubCommandMessage(escapeNewLines: Bool = true) -> String {
+		let noNewLinesReplacements = self
 			.replacingOccurrences(of: "%",  with: "%25")
+		guard escapeNewLines else {
+			return noNewLinesReplacements
+		}
+		
+		return noNewLinesReplacements
 			.replacingOccurrences(of: "\r", with: "%0D")
 			.replacingOccurrences(of: "\n", with: "%0A")
 	}

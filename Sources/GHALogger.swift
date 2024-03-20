@@ -74,7 +74,8 @@ public struct GHALogger : LogHandler {
 			case .info:             (/* GitHub does not have an info log command, which makes sense actually as a log command creates an actual annotation (except the debug one, so they could’ve done it…). */)
 			case .debug, .trace:    constants.logPrefix = "::debug::" + constants.logPrefix
 		}
-		cltLogger.log(constants: constants, level: level, message: "\(messageStr.escapedForGitHubCommandMessage())", metadata: metadata, source: source, file: file, function: function, line: line)
+		/* We do not escape the new lines in the message as they will be removed anyway by our multiline mode, and new lines are improperly handled by GitHub. */
+		cltLogger.log(constants: constants, level: level, message: "\(messageStr.escapedForGitHubCommandMessage(escapeNewLines: false))", metadata: metadata, source: source, file: file, function: function, line: line)
 	}
 	
 	private var cltLogger: CLTLogger

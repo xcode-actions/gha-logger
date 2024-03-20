@@ -14,7 +14,7 @@ public struct GHALogger : LogHandler {
 	public static let metadataKeyForLogTitle = "log-title"
 	
 	public static func sendCommand(_ command: GHACommand, withText text: String = "") {
-		CLTLogger.write(Data((command.gitHubString() + text).utf8), to: .standardError)
+		CLTLogger.write(Data((command.gitHubString() + text + "\n").utf8), to: .standardError)
 	}
 	
 	public init(metadataProvider: Logger.MetadataProvider? = LoggingSystem.metadataProvider) {

@@ -91,4 +91,17 @@ final class GHALoggerTests : XCTestCase {
 		logger.critical("YAM!\nhere is the second line\nand why not a third one", metadata: ["with": ["metadata", "again"], "because": "42"])
 	}
 	
+	func testVisual4() {
+		XCTAssertTrue(true, "We only want to see how the log look, so please see the logs.")
+		
+		var logger = Logger(label: "my logger")
+		logger.logLevel = .trace
+		logger.warning("Warning log with a title", metadata: [GHALogger.metadataKeyForLogTitle: "This is a log title!"])
+		GHALogger.sendCommand(.startGroup, withText: "This is the best group ever.")
+		logger.info("An info message in the group", metadata: [GHALogger.metadataKeyForLogTitle: "The info message has a title too."])
+		logger.critical("A critical message in the group", metadata: [GHALogger.metadataKeyForLogTitle: "The critical message’s title."])
+		GHALogger.sendCommand(.endGroup)
+		logger.info("We’re now out of the group.")
+	}
+	
 }

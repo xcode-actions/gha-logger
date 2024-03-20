@@ -51,28 +51,22 @@ public struct GHALogger : LogHandler {
 		let messageStr = message.description
 		/* If the filename contains a space it’s ok.
 		 * It seems impossible to escape a file name containing a comma though. */
-		let ghMetadata = {
-			let title: String?
+		let ghTitle = {
 			/* Note: We only check the “direct” metadata on purpose. */
 			switch metadata?[Self.metadataKeyForLogTitle] {
-				case .string(let str):            title = str
-				case .stringConvertible(let str): title = str.description
+				case .string(let str):            return str
+				case .stringConvertible(let str): return str.description
 				case .dictionary, .array, nil:
-					title = messageStr.split(separator: "\n", omittingEmptySubsequences: true).first.flatMap(String.init)
+					return messageStr.split(separator: "\n", omittingEmptySubsequences: true).first.flatMap(String.init) ?? "<no title>"
 			}
-			return (
-				                 "file=\(file.escapedForGitHubCommandPropertyValue())" +
-				                ",line=\(line)" +
-				(title.flatMap{ ",title=\($0.escapedForGitHubCommandPropertyValue())" } ?? "")
-			)
 		}
 		var constants = cltLogger.constantsByLevel[level] ?? .init()
 		switch level {
-			case .critical, .error: constants.logPrefix = "::error \(  ghMetadata())::" + constants.logPrefix
-			case .warning:          constants.logPrefix = "::warning \(ghMetadata())::" + constants.logPrefix
-			case .notice:           constants.logPrefix = "::notice \( ghMetadata())::" + constants.logPrefix
+			case .critical, .error: constants.logPrefix = GHACommand.error  (title: ghTitle(), file: file, line: line).gitHubString() + constants.logPrefix
+			case .warning:          constants.logPrefix = GHACommand.warning(title: ghTitle(), file: file, line: line).gitHubString() + constants.logPrefix
+			case .notice:           constants.logPrefix = GHACommand.notice (title: ghTitle(), file: file, line: line).gitHubString() + constants.logPrefix
 			case .info:             (/* GitHub does not have an info log command, which makes sense actually as a log command creates an actual annotation (except the debug one, so they could’ve done it…). */)
-			case .debug, .trace:    constants.logPrefix = "::debug::" + constants.logPrefix
+			case .debug, .trace:    constants.logPrefix = GHACommand.debug.gitHubString() + constants.logPrefix
 		}
 		/* We do not escape the new lines in the message as they will be removed anyway by our multiline mode, and new lines are improperly handled by GitHub. */
 		cltLogger.log(constants: constants, level: level, message: "\(messageStr.escapedForGitHubCommandMessage(escapeNewLines: false))", metadata: metadata, source: source, file: file, function: function, line: line)

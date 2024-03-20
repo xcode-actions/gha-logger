@@ -15,7 +15,7 @@ let package = Package(
 	],
 	dependencies: [
 		.package(url: "https://github.com/apple/swift-log.git",          from: "1.5.1"),
-		.package(url: "https://github.com/xcode-actions/clt-logger.git", from: "0.9.0-beta.2"),
+		.package(url: "https://github.com/xcode-actions/clt-logger.git", from: "0.9.0-beta.3"),
 	],
 	targets: [
 		.target(name: "GHALogger", dependencies: [

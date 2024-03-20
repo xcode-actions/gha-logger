@@ -13,6 +13,10 @@ public struct GHALogger : LogHandler {
 	
 	public static let metadataKeyForLogTitle = "log-title"
 	
+	public static func sendCommand(_ command: GHACommand, withText text: String = "") {
+		CLTLogger.write(Data((command.gitHubString() + text).utf8), to: .standardError)
+	}
+	
 	public init(metadataProvider: Logger.MetadataProvider? = LoggingSystem.metadataProvider) {
 		var constantsByLevel = CLTLogger.defaultConstantsByLogLevelForColors
 		constantsByLevel[.critical]!.logPrefix = "\(SGR(.fgColorTo4BitBrightWhite, .bgColorTo4BitRed, .bold).rawValue)CRITICAL\(SGR(.reset, .bold).rawValue) " /* This will be modified dynamically, but we always want the bold and [critical]. */

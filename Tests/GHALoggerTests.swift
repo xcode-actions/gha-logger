@@ -65,13 +65,13 @@ final class GHALoggerTests : XCTestCase {
 		
 		var logger = Logger(label: "my logger")
 		logger.logLevel = .trace
-		logger.trace(   "trace:    Example of text at this level. Isn’t it amazing?")
-		logger.debug(   "debug:    Example of text at this level. Isn’t it amazing?")
-		logger.info(    "info:     Example of text at this level. Isn’t it amazing?")
-		logger.notice(  "notice:   Example of text at this level. Isn’t it amazing?")
-		logger.warning( "warning:  Example of text at this level. Isn’t it amazing?")
-		logger.error(   "error:    Example of text at this level. Isn’t it amazing?")
-		logger.critical("critical: Example of text at this level. Isn’t it amazing?")
+		logger.trace(   "trace::    Example of text at this level. Isn’t it amazing?")
+		logger.debug(   "debug::    Example of text at this level. Isn’t it amazing?")
+		logger.info(    "info::     Example of text at this level. Isn’t it amazing?")
+		logger.notice(  "notice::   Example of text at this level. Isn’t it amazing?")
+		logger.warning( "warning::  Example of text at this level. Isn’t it amazing?")
+		logger.error(   "error::    Example of text at this level. Isn’t it amazing?")
+		logger.critical("critical:: Example of text at this level. Isn’t it amazing?")
 	}
 	
 	func testVisual3() {

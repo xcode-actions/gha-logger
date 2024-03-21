@@ -1,4 +1,9 @@
 import Foundation
+#if canImport(System)
+import System
+#else
+import SystemPackage /* Imported by CLTLogger; should be specifically in the Package.swift file. */
+#endif
 
 import CLTLogger
 import Logging
@@ -13,8 +18,10 @@ public struct GHALogger : LogHandler {
 	
 	public static let metadataKeyForLogTitle = "log-title"
 	
-	public static func sendCommand(_ command: GHACommand, withText text: String = "") {
-		CLTLogger.write(Data((command.gitHubString() + text + "\n").utf8), to: .standardError)
+	public static let defaultOutputFileDescriptor: FileDescriptor = .standardError
+	
+	public static func sendCommand(_ command: GHACommand, withText text: String = "", to fd: FileDescriptor = Self.defaultOutputFileDescriptor) {
+		CLTLogger.write(Data((command.gitHubString() + text + "\n").utf8), to: fd)
 	}
 	
 	public init(metadataProvider: Logger.MetadataProvider? = LoggingSystem.metadataProvider) {
@@ -28,7 +35,7 @@ public struct GHALogger : LogHandler {
 		constantsByLevel[.info]!    .logPrefix = "\(SGR(.bold).rawValue)Info:\(SGR.reset.rawValue) "
 		constantsByLevel[.debug]!   .logPrefix = "" /* This will be set dynamically. */
 		constantsByLevel[.trace]!   .logPrefix = "\(SGR(.fgColorTo256PaletteValue(247)).rawValue)[trace]\(SGR.reset.rawValue)" /* This will be modified dynamically, but we always want the [trace]. */
-		self.cltLogger = .init(fd: .standardError, multilineMode: .disallowMultiline, constantsByLevel: constantsByLevel, metadataProvider: metadataProvider)
+		self.cltLogger = .init(fd: Self.defaultOutputFileDescriptor, multilineMode: .disallowMultiline, constantsByLevel: constantsByLevel, metadataProvider: metadataProvider)
 	}
 	
 	public var logLevel: Logger.Level {

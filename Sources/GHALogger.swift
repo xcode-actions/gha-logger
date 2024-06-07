@@ -26,7 +26,7 @@ public struct GHALogger : LogHandler {
 	
 	public init(metadataProvider: Logger.MetadataProvider? = LoggingSystem.metadataProvider) {
 		var constantsByLevel = CLTLogger.defaultConstantsByLogLevelForColors
-		constantsByLevel[.critical]!.logPrefix = "\(SGR(.fgColorTo4BitBrightWhite, .bgColorTo4BitRed, .bold).rawValue)CRITICAL\(SGR(.reset, .bold).rawValue) " /* This will be modified dynamically, but we always want the bold and [critical]. */
+		constantsByLevel[.critical]!.logPrefix = "\(SGR(.fgColorTo4BitBrightWhite, .bgColorTo4BitRed, .bold).rawValue)CRITICAL\(SGR(.reset, .bold).rawValue) " /* This will be modified dynamically, but we always want the bold and CRITICAL. */
 		constantsByLevel[.error]!   .logPrefix = "" /* This will be set dynamically. */
 		constantsByLevel[.warning]! .logPrefix = "" /* This will be set dynamically. */
 		constantsByLevel[.notice]!  .logPrefix = "" /* This will be set dynamically. */

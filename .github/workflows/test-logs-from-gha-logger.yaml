@@ -9,7 +9,7 @@ jobs:
       - name: Install Swift
         run: |
           export SWIFTLY_READ_FROM_STDIN=1
-          curl -L https://swift-server.github.io/swiftly/swiftly-install.sh | bash
+          curl -L https://swiftlang.github.io/swiftly/swiftly-install.sh | bash
           swiftly install latest
       - name: Clone Repo
         uses: actions/checkout@v4

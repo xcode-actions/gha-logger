@@ -22,6 +22,6 @@ let package = Package(
 			.product(name: "CLTLogger", package: "clt-logger"),
 			.product(name: "Logging",   package: "swift-log"),
 		], path: "Sources"),
-		.testTarget(name: "GHALoggerTests", dependencies: ["GHALogger"], path: "Tests"),
+		.testTarget(name: "GHALoggerTests", dependencies: ["GHALogger"]),
 	]
 )

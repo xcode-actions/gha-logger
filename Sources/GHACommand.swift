@@ -2,43 +2,43 @@ import Foundation
 
 
 
-public struct GHACommand : Sendable {
+public struct GHACommand : GHALogger_Sendable {
 	
-	public static let addMask:    GHACommand = .init(command: "add-mask")!
-	public static let startGroup: GHACommand = .init(command: "group")!
-	public static let endGroup:   GHACommand = .init(command: "endgroup")!
+	public static let addMask    = GHACommand(command: "add-mask")!
+	public static let startGroup = GHACommand(command: "group")!
+	public static let endGroup   = GHACommand(command: "endgroup")!
 	
 	public static func notice(title: String, file: String? = nil, line: UInt? = nil, endLine: UInt? = nil, column: UInt? = nil, endColumn: UInt? = nil) -> GHACommand {
-		return .init(command: "notice", parameters: [
+		return GHACommand(command: "notice", parameters: [
 			"title": title,
 			"file": file,
 			"col": column.flatMap(String.init),
 			"endColumn": endColumn.flatMap(String.init),
 			"line": line.flatMap(String.init),
 			"endLine": endLine.flatMap(String.init),
-		].compactMapValues{ $0 })!
+		].compactMapValues{ $0 } as [String: String])!
 	}
 	public static func warning(title: String, file: String? = nil, line: UInt? = nil, endLine: UInt? = nil, column: UInt? = nil, endColumn: UInt? = nil) -> GHACommand {
-		return .init(command: "warning", parameters: [
+		return GHACommand(command: "warning", parameters: [
 			"title": title,
 			"file": file,
 			"col": column.flatMap(String.init),
 			"endColumn": endColumn.flatMap(String.init),
 			"line": line.flatMap(String.init),
 			"endLine": endLine.flatMap(String.init),
-		].compactMapValues{ $0 })!
+		].compactMapValues{ $0 } as [String: String])!
 	}
 	public static func error(title: String, file: String? = nil, line: UInt? = nil, endLine: UInt? = nil, column: UInt? = nil, endColumn: UInt? = nil) -> GHACommand {
-		return .init(command: "error", parameters: [
+		return GHACommand(command: "error", parameters: [
 			"title": title,
 			"file": file,
 			"col": column.flatMap(String.init),
 			"endColumn": endColumn.flatMap(String.init),
 			"line": line.flatMap(String.init),
 			"endLine": endLine.flatMap(String.init),
-		].compactMapValues{ $0 })!
+		].compactMapValues{ $0 } as [String: String])!
 	}
-	public static let debug: GHACommand = .init(command: "debug")!
+	public static let debug = GHACommand(command: "debug")!
 	
 	public var command: String
 	public var parameters: [String: String]
@@ -54,8 +54,8 @@ public struct GHACommand : Sendable {
 	}
 	
 	public func gitHubString() -> String {
-		let parameters = parameters.map{ "\($0.key)=\($0.value.escapedForGitHubCommandPropertyValue())" }.joined(separator: ",")
-		return "::\(command)\(parameters.isEmpty ? "" : " ")\(parameters)::"
+		let parametersStr = parameters.map{ "\($0.key)=\($0.value.escapedForGitHubCommandPropertyValue())" }.joined(separator: ",")
+		return "::\(command)\(parametersStr.isEmpty ? "" : " ")\(parametersStr)::"
 	}
 	
 	/* This list of chars is probably not enough in itself, but it will do. */

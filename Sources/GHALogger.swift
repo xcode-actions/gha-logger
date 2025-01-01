@@ -57,7 +57,7 @@ public struct GHALogger : LogHandler {
 		let messageStr = message.description
 		/* If the filename contains a space it’s ok.
 		 * It seems impossible to escape a file name containing a comma though. */
-		let ghTitle = {
+		let ghTitle = { () -> String in
 			/* Note: We only check the “direct” metadata on purpose. */
 			switch metadata?[Self.metadataKeyForLogTitle] {
 				case .string(let str):            return str

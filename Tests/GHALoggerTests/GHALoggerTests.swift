@@ -65,6 +65,20 @@ final class GHALoggerTests : XCTestCase {
 		
 		var logger = Logger(label: "my logger")
 		logger.logLevel = .trace
+		logger.trace(   "Example of text at this level. Isn’t it amazing?", metadata: ["pid": "42"])
+		logger.debug(   "Example of text at this level. Isn’t it amazing?", metadata: ["pid": "42"])
+		logger.info(    "Example of text at this level. Isn’t it amazing?", metadata: ["pid": "42"])
+		logger.notice(  "Example of text at this level. Isn’t it amazing?", metadata: ["pid": "42"])
+		logger.warning( "Example of text at this level. Isn’t it amazing?", metadata: ["pid": "42"])
+		logger.error(   "Example of text at this level. Isn’t it amazing?", metadata: ["pid": "42"])
+		logger.critical("Example of text at this level. Isn’t it amazing?", metadata: ["pid": "42"])
+	}
+	
+	func testVisual2WithColonCheck() {
+		XCTAssertTrue(true, "We only want to see how the log look, so please see the logs.")
+		
+		var logger = Logger(label: "my logger")
+		logger.logLevel = .trace
 		logger.trace(   "trace::    Example of text at this level. Isn’t it amazing?")
 		logger.debug(   "debug::    Example of text at this level. Isn’t it amazing?")
 		logger.info(    "info::     Example of text at this level. Isn’t it amazing?")

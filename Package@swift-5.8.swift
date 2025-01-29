@@ -18,13 +18,13 @@ let package = Package(
 	],
 	dependencies: [
 		.package(url: "https://github.com/apple/swift-log.git",          from: "1.5.1"),
-		.package(url: "https://github.com/xcode-actions/clt-logger.git", from: "1.0.0-beta"),
+		.package(url: "https://github.com/xcode-actions/clt-logger.git", from: "1.0.0-rc"),
 	],
 	targets: [
 		.target(name: "GHALogger", dependencies: [
 			.product(name: "CLTLogger", package: "clt-logger"),
 			.product(name: "Logging",   package: "swift-log"),
-		], path: "Sources", swiftSettings: swiftSettings),
+		], path: "Sources", exclude: ["GHALogger+NoSendable.swift"], swiftSettings: swiftSettings),
 		.testTarget(name: "GHALoggerTests", dependencies: ["GHALogger"], swiftSettings: swiftSettings),
 	]
 )

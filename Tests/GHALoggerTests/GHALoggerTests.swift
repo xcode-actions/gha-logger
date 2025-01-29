@@ -11,7 +11,7 @@ import Logging
 final class GHALoggerTests : XCTestCase {
 	
 	override class func setUp() {
-		LoggingSystem.bootstrap{ _ in GHALogger() }
+		LoggingSystem.bootstrap(GHALogger.init, metadataProvider: nil/* or whatever you want */)
 	}
 	
 	/* From <https://apple.github.io/swift-log/docs/current/Logging/Protocols/LogHandler.html#treat-log-level-amp-metadata-as-values>. */

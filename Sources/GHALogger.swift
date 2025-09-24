@@ -16,7 +16,7 @@ public struct GHALogger : LogHandler {
 	public static let defaultOutputFileHandle: FileHandle = .standardError
 	
 	public static func sendCommand(_ command: GHACommand, withText text: String = "", to fh: FileHandle = Self.defaultOutputFileHandle) {
-		CLTLogger.write(Data((command.gitHubString() + text + "\n").utf8), to: fh)
+		CLTLogger.writeLog(Data((command.gitHubString() + text + "\n").utf8), to: fh)
 	}
 	
 	public init(metadataProvider: Logger.MetadataProvider? = LoggingSystem.metadataProvider) {

@@ -26,7 +26,7 @@ XCTMain(tests)
 import struct CLTLogger.SGR
 try FileHandle.standardError.write(contentsOf: Data("""
 \(SGR(.fgColorTo4BitBrightRed, .bold).rawValue)Tests are disabled on WASI\(SGR.reset.rawValue):
-\(SGR(.fgColorTo256PaletteValue(245)).rawValue)CLTLogger is compatible with Swift <5.4, so we have to add a LinuxMain file in which we call XCTMain.
+\(SGR(.fgColorTo256PaletteValue(245)).rawValue)GHALogger is compatible with Swift <5.4, so we have to add a LinuxMain file in which we call XCTMain.
 On WASI the XCTMain function is async, so we have to #if the XCTMain call, one with the await keyword, the other without.
 However, on Swift <5.5 the LinuxMain setup like this does not compile because the old compiler does not know the await keyword
  (even though the whole code is ignored because we do not compile for WASI when compiling with an old compiler).
